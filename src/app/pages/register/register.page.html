@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Sign Up</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <form [formGroup]="registrationForm" (ngSubmit)="registerUser()">
+    
+        <ion-item>
+            <ion-label position="stacked">Email Address</ion-label>
+            <ion-input formControlName="email" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">Password</ion-label>
+            <ion-input formControlName="password" type="password"></ion-input>
+        </ion-item>
+  
+    </form>
+
+</ion-content>
