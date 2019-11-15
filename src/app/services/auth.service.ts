@@ -13,9 +13,9 @@ export class AuthService {
 
   constructor(public afAuth: AngularFireAuth, private platform: Platform, private zone: NgZone) { }
 
-  ngOnInit(){
+  ngOnInit() {
     // Emit logged in status whenever auth state changes
-    firebase.auth().onAuthStateChanged(firebaseUser => {
+    this.afAuth.auth.onAuthStateChanged(firebaseUser => {
       this.zone.run(() => {
         firebaseUser ? this.loggedIn.next(true) : this.loggedIn.next(false);
       });
@@ -26,7 +26,19 @@ export class AuthService {
     // if (this.platform.is("capacitor")) {
     //   this.nativeFacebookAuth();
     // } else {
-      // this.browserFacebookAuth();
+    // this.browserFacebookAuth();
     // }
+  }
+
+  async loginWithEmail(email: string, password: string): Promise<any> {
+    await this.afAuth.auth.signInWithEmailAndPassword(email, password)
+    .catch(error => {
+      console.log(error);
+    });
+  }
+
+  async registerWithEmail(email: string, password: string): Promise<any> {
+    let result = await this.afAuth.auth.createUserWithEmailAndPassword(email, password);
+    console.log(result.user);
   }
 }
