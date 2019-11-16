@@ -6,7 +6,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="ion-padding">
 
   <form [formGroup]="registrationForm">
 
@@ -35,7 +35,7 @@
     </div>
 
   </form>
-  <ion-button expand="block" (click)="registerUser()">Sign Up!</ion-button>
+  <ion-button expand="block" (click)="registerUser()" [disabled]="registrationForm.invalid">Sign Up!</ion-button>
   <ion-grid>
     <ion-row>
       <ion-col>
