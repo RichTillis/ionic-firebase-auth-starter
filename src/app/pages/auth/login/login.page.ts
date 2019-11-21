@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 
+import { AuthService } from '../../../services/auth/auth.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -10,6 +12,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } 
 export class LoginPage implements OnInit {
 
   loginForm: FormGroup;
+  loggedIn: boolean;
 
   validation_messages = {
     'email': [
@@ -21,15 +24,14 @@ export class LoginPage implements OnInit {
     ],
   }
 
-  constructor(public formBuilder: FormBuilder, private router: Router) {
+  constructor(public formBuilder: FormBuilder, private router: Router, private authService: AuthService) {
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      password: ['',  Validators.required]
+      password: ['', Validators.required]
     });
   }
 
   ngOnInit() {
-
   }
 
   routeToRegisterPage() {
@@ -40,8 +42,23 @@ export class LoginPage implements OnInit {
     this.router.navigateByUrl('/forgot-password');
   }
 
-  loginWithEmail(){
-    console.log('login clicked');
+  loginWithEmail() {
+    let email: string = this.loginForm.get('email').value;
+    let password: string = this.loginForm.get('password').value;
+
+    this.authService.loginWithEmail(email, password)
+      .then(() => {
+        this.loginSuccess()
+        this.router.navigateByUrl('/home');
+      })
+      .catch(error => console.log(error));
+
   }
+
+  loginSuccess() {
+    console.log("login successful");
+    // this.utilService.displayOkAlert("Welcome", null, "Registration Successful");
+  }
+
 
 }

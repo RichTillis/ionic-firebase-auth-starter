@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { Router } from "@angular/router";
 
-import { AuthService } from '../../../services/auth.service';
-import { Subject } from 'rxjs';
+import { AuthService } from '../../../services/auth/auth.service';
+import { LoadingService } from '../../../services/loading/loading.service';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 })
 export class RegisterPage implements OnInit {
 
-  public registrationForm: FormGroup;
+  registrationForm: FormGroup;
 
   validation_messages = {
     'email': [
@@ -25,7 +25,11 @@ export class RegisterPage implements OnInit {
     ],
   }
 
-  constructor(public formBuilder: FormBuilder, private router: Router, private authService: AuthService) { }
+  constructor(
+    public formBuilder: FormBuilder,
+    private router: Router,
+    private authService: AuthService,
+    public loadingService: LoadingService) { }
 
   ngOnInit() {
     this.registrationForm = this.formBuilder.group({
@@ -34,8 +38,26 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  registerUser() {
-    this.authService.registerWithEmail(this.registrationForm.get('email').value, this.registrationForm.get('password').value);
+  async registerUser() {
+    let email: string = this.registrationForm.get('email').value;
+    let password: string = this.registrationForm.get('password').value;
+
+    this.loadingService.present({
+      message: 'Registering. . .'
+    });
+
+    this.authService.registerWithEmail(email, password)
+      .then(() => {
+        this.loadingService.dismiss();
+        this.registerSuccess()
+        this.router.navigateByUrl('/home');
+      })
+      .catch(error => console.log(error));
+  }
+
+  registerSuccess() {
+    console.log("registration successful");
+    // this.utilService.displayOkAlert("Welcome", null, "Registration Successful");
   }
 
   routeToLoginPage() {
