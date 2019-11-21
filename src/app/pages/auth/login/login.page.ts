@@ -9,6 +9,7 @@ import {
 import { AuthService } from "../../../services/auth/auth.service";
 import { ToastService } from "../../../services/toast/toast.service";
 import { LoadingService } from "../../../services/loading/loading.service";
+import { AlertService } from '../../../services/alert/alert.service';
 
 @Component({
   selector: "app-login",
@@ -31,8 +32,9 @@ export class LoginPage implements OnInit {
     public formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    public loadingService: LoadingService,
-    private toastService: ToastService
+    private loadingService: LoadingService,
+    private toastService: ToastService,
+    private alertService: AlertService
   ) {
     this.loginForm = formBuilder.group({
       email: ["", Validators.compose([Validators.required, Validators.email])],
@@ -67,7 +69,7 @@ export class LoginPage implements OnInit {
       })
       .catch(error => {
         console.log(error);
-        this.loginFailed(error.code);
+        this.loginFailed(error);
       });
   }
 
@@ -87,19 +89,20 @@ export class LoginPage implements OnInit {
     });
   }
 
-  loginFailed(errorCode: string) {
+  loginFailed(error: any) {
     this.loadingService.dismiss();
 
-    this.toastService.present({
-      message: errorCode,
-      color: "danger",
-      showCloseButton: true
+    this.alertService.present({
+      header: 'Login Error',
+      subHeader: error.code,
+      message: error.message,
+      buttons: ['OK']
     });
   }
 
   resetLoginForm() {
     this.loginForm.get("email").setValue("");
-    this.loginForm.get("password").setValue("");    
+    this.loginForm.get("password").setValue("");
     this.loginForm.reset(this.loginForm.value);
     this.loginForm.markAsPristine();
   }

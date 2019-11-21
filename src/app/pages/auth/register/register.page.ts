@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
 import { AuthService } from "../../../services/auth/auth.service";
 import { LoadingService } from "../../../services/loading/loading.service";
 import { ToastService } from "../../../services/toast/toast.service";
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: "app-register",
@@ -36,8 +37,9 @@ export class RegisterPage implements OnInit {
     public formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    public loadingService: LoadingService,
-    private toastService: ToastService
+    private loadingService: LoadingService,
+    private toastService: ToastService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -60,7 +62,10 @@ export class RegisterPage implements OnInit {
         this.registrationSuccess();
         this.router.navigateByUrl("/home");
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        this.registerFailed(error);
+      });
   }
 
   registrationProcessing(){
@@ -76,6 +81,17 @@ export class RegisterPage implements OnInit {
       message: "All registered, welcome aboard!",
       duration: 3000,
       color: "secondary"
+    });
+  }
+
+  registerFailed(error: any) {
+    this.loadingService.dismiss();
+
+    this.alertService.present({
+      header: 'Registration Error',
+      subHeader: error.code,
+      message: error.message,
+      buttons: ['OK']
     });
   }
 

@@ -42,4 +42,8 @@ export class AuthService {
     await this.afAuth.auth.signOut();
     console.log("user logged out");
   }
+
+  async resetPassword(email: string) {
+    await this.afAuth.auth.sendPasswordResetEmail(email);
+  }
 }
