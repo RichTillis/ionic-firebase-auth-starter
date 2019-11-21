@@ -20,7 +20,7 @@ export class AuthService {
     });
   }
 
-  get isAuthenticated(): boolean {
+  isAuthenticated(): boolean {
     return this.authState !== null;
   }
 
