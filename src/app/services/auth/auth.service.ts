@@ -1,33 +1,32 @@
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-
+import { Injectable, NgZone } from "@angular/core";
 import { AngularFireAuth } from '@angular/fire/auth';
-import * as firebase from 'firebase/app';
-
 import "@firebase/auth";
+
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   authState: any;
+  public loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(public afAuth: AngularFireAuth) { }
+  constructor(public afAuth: AngularFireAuth, private zone: NgZone) {}
 
-  ngOnInit() {
+  init(){
     this.afAuth.authState.subscribe(auth => {
       this.authState = auth;
     });
-  }
 
-  isAuthenticated(): boolean {
-    return this.authState !== null;
-  }
-
-  onAuthStateChanged() {
-    this.afAuth.auth.onAuthStateChanged(user => {
-      this.authState = user
+    this.afAuth.auth.onAuthStateChanged(firebaseUser => {
+      this.zone.run(() => {
+        firebaseUser ? this.loggedIn.next(true) : this.loggedIn.next(false);
+      });
     });
+  }
+
+  get isAuthenticated(): boolean {
+    return (this.authState !== null) ? true : false;
   }
 
   async loginWithEmail(email: string, password: string) {
@@ -40,7 +39,6 @@ export class AuthService {
 
   async logoutUser() {
     await this.afAuth.auth.signOut();
-    console.log("user logged out");
   }
 
   async resetPassword(email: string) {
