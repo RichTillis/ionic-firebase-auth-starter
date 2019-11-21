@@ -3,9 +3,7 @@ import { Router } from "@angular/router";
 import {
   FormBuilder,
   FormGroup,
-  Validators,
-  ReactiveFormsModule,
-  FormControl
+  Validators
 } from "@angular/forms";
 
 import { AuthService } from "../../../services/auth/auth.service";
@@ -42,13 +40,15 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   routeToRegisterPage() {
+    this.resetLoginForm();
     this.router.navigateByUrl("/register");
   }
 
   routeToForgotPasswordPage() {
+    this.resetLoginForm();
     this.router.navigateByUrl("/forgot-password");
   }
 
@@ -57,18 +57,21 @@ export class LoginPage implements OnInit {
     let password: string = this.loginForm.get("password").value;
 
     this.loginPocessing();
-    
+
     this.authService
       .loginWithEmail(email, password)
       .then(() => {
-        this.resetLoginFormValues();
+        this.resetLoginForm();
         this.loginSuccess();
         this.router.navigateByUrl("/home");
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        this.loginFailed(error.code);
+      });
   }
 
-  loginPocessing(){
+  loginPocessing() {
     this.loadingService.present({
       message: "Logging in . . ."
     });
@@ -84,8 +87,20 @@ export class LoginPage implements OnInit {
     });
   }
 
-  resetLoginFormValues(){
+  loginFailed(errorCode: string) {
+    this.loadingService.dismiss();
+
+    this.toastService.present({
+      message: errorCode,
+      color: "danger",
+      showCloseButton: true
+    });
+  }
+
+  resetLoginForm() {
     this.loginForm.get("email").setValue("");
-    this.loginForm.get("password").setValue("");
+    this.loginForm.get("password").setValue("");    
+    this.loginForm.reset(this.loginForm.value);
+    this.loginForm.markAsPristine();
   }
 }

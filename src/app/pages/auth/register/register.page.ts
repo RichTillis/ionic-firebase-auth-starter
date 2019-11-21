@@ -2,9 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
-  Validators,
-  ReactiveFormsModule,
-  FormControl
+  Validators
 } from "@angular/forms";
 import { Router } from "@angular/router";
 
@@ -75,17 +73,26 @@ export class RegisterPage implements OnInit {
     this.loadingService.dismiss();
 
     this.toastService.present({
-      message: "All registered. Welcome aboard!",
-      duration: 4000,
+      message: "All registered, welcome aboard!",
+      duration: 3000,
       color: "secondary"
     });
   }
 
   routeToLoginPage() {
+    this.resetRegistrationForm();
     this.router.navigateByUrl("/login");
   }
 
   routeToForgotPasswordPage() {
+    this.resetRegistrationForm();
     this.router.navigateByUrl("/forgot-password");
+  }
+
+  resetRegistrationForm(){
+    this.registrationForm.get("email").setValue("");
+    this.registrationForm.get("password").setValue("");    
+    this.registrationForm.reset(this.registrationForm.value);
+    this.registrationForm.markAsPristine();
   }
 }
