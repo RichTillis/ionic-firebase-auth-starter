@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 import { AuthService } from "../../../services/auth/auth.service";
 import { LoadingService } from "../../../services/loading/loading.service";
 import { ToastService } from "../../../services/toast/toast.service";
-import {AlertService} from '../../../services/alert/alert.service';
+import { AlertService } from '../../../services/alert/alert.service';
 
 @Component({
   selector: "app-register",
@@ -40,7 +40,7 @@ export class RegisterPage implements OnInit {
     private loadingService: LoadingService,
     private toastService: ToastService,
     private alertService: AlertService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.registrationForm = this.formBuilder.group({
@@ -50,10 +50,10 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  async registerUser() {
+  registerUser() {
     let email: string = this.registrationForm.get("email").value;
     let password: string = this.registrationForm.get("password").value;
-    
+
     this.registrationProcessing();
 
     this.authService
@@ -68,7 +68,7 @@ export class RegisterPage implements OnInit {
       });
   }
 
-  registrationProcessing(){
+  registrationProcessing() {
     this.loadingService.present({
       message: "Registering. . ."
     });
@@ -105,9 +105,9 @@ export class RegisterPage implements OnInit {
     this.router.navigateByUrl("/forgot-password");
   }
 
-  resetRegistrationForm(){
+  resetRegistrationForm() {
     this.registrationForm.get("email").setValue("");
-    this.registrationForm.get("password").setValue("");    
+    this.registrationForm.get("password").setValue("");
     this.registrationForm.reset(this.registrationForm.value);
     this.registrationForm.markAsPristine();
   }
