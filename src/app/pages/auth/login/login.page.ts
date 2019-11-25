@@ -35,14 +35,14 @@ export class LoginPage implements OnInit {
     private loadingService: LoadingService,
     private toastService: ToastService,
     private alertService: AlertService
-  ) {
-    this.loginForm = formBuilder.group({
+  ) { }
+
+  ngOnInit() {
+    this.loginForm = this.formBuilder.group({
       email: ["", Validators.compose([Validators.required, Validators.email])],
       password: ["", Validators.required]
     });
-  }
-
-  ngOnInit() { }
+   }
 
   routeToRegisterPage() {
     this.resetLoginForm();

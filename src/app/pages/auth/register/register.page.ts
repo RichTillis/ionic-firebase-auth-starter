@@ -1,15 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  FormBuilder,
-  FormGroup,
-  Validators
-} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 
 import { AuthService } from "../../../services/auth/auth.service";
 import { LoadingService } from "../../../services/loading/loading.service";
 import { ToastService } from "../../../services/toast/toast.service";
-import { AlertService } from '../../../services/alert/alert.service';
+import { AlertService } from "../../../services/alert/alert.service";
 
 @Component({
   selector: "app-register",
@@ -40,12 +36,14 @@ export class RegisterPage implements OnInit {
     private loadingService: LoadingService,
     private toastService: ToastService,
     private alertService: AlertService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.registrationForm = this.formBuilder.group({
       email: ["", Validators.compose([Validators.required, Validators.email])],
-      password: ["", Validators.compose([Validators.required, Validators.minLength(8)])
+      password: [
+        "",
+        Validators.compose([Validators.required, Validators.minLength(8)])
       ]
     });
   }
@@ -88,10 +86,10 @@ export class RegisterPage implements OnInit {
     this.loadingService.dismiss();
 
     this.alertService.present({
-      header: 'Registration Error',
+      header: "Registration Error",
       subHeader: error.code,
       message: error.message,
-      buttons: ['OK']
+      buttons: ["OK"]
     });
   }
 
