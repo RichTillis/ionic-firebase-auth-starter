@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from "@angular/core";
 import { AngularFireAuth } from '@angular/fire/auth';
-import "@firebase/auth";
+// import "@firebase/auth";
 
 import { BehaviorSubject } from "rxjs";
 
@@ -8,7 +8,7 @@ import { BehaviorSubject } from "rxjs";
   providedIn: 'root'
 })
 export class AuthService {
-  authState: any;
+  private authState: any;
   public loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(public afAuth: AngularFireAuth, private zone: NgZone) {}
