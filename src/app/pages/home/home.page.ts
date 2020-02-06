@@ -14,9 +14,9 @@ export class HomePage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private toastService: ToastService
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   logout() {
 
@@ -35,5 +35,9 @@ export class HomePage implements OnInit {
       duration: 3000,
       color: "secondary"
     });
+  }
+
+  navigateToProfile() {
+    this.router.navigateByUrl("/user-profile");
   }
 }
