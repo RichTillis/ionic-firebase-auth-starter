@@ -34,6 +34,18 @@
       </ng-container>
     </div>
 
+    <ion-item>
+      <ion-input formControlName="confirmPassword" placeholder="Confirm Password" type="password"></ion-input>
+    </ion-item>
+    <div>
+      <ng-container *ngFor="let validation of validation_messages.confirmPassword">
+        <div class="error-message"
+          *ngIf="registrationForm.get('confirmPassword').hasError(validation.type) && (registrationForm.get('confirmPassword').dirty || registrationForm.get('confirmPassword').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
   </form>
   <ion-button expand="block" (click)="registerUser()" [disabled]="registrationForm.invalid">Sign Up!</ion-button>
   <ion-grid>

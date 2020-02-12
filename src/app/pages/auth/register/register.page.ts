@@ -7,6 +7,8 @@ import { LoadingService } from "../../../services/loading/loading.service";
 import { ToastService } from "../../../services/toast/toast.service";
 import { AlertService } from "../../../services/alert/alert.service";
 
+import { confirmPasswordValidator } from '../../../validators/confirm-password-validator';
+
 @Component({
   selector: "app-register",
   templateUrl: "./register.page.html",
@@ -26,6 +28,13 @@ export class RegisterPage implements OnInit {
         type: "minlength",
         message: "Password must be at least 8 characters long."
       }
+    ],
+    confirmPassword: [
+      { type: "required", message: "Confirm Password is required." },
+      {
+        type: "minlength",
+        message: "Password must be at least 8 characters long."
+      }
     ]
   };
 
@@ -36,21 +45,20 @@ export class RegisterPage implements OnInit {
     private loadingService: LoadingService,
     private toastService: ToastService,
     private alertService: AlertService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.registrationForm = this.formBuilder.group({
       email: ["", Validators.compose([Validators.required, Validators.email])],
-      password: [
-        "",
-        Validators.compose([Validators.required, Validators.minLength(8)])
-      ]
+      password: ["", Validators.compose([Validators.required, Validators.minLength(8)])],
+      //not yet finished
+      confirmPassword: ["", Validators.compose([Validators.required, confirmPasswordValidator])]
     });
   }
 
   registerUser() {
-    let email: string = this.registrationForm.get("email").value;
-    let password: string = this.registrationForm.get("password").value;
+    const email: string = this.registrationForm.controls['email'].value;
+    const password: string = this.registrationForm.controls['password'].value;
 
     this.registrationProcessing();
 
@@ -62,7 +70,7 @@ export class RegisterPage implements OnInit {
       })
       .catch(error => {
         console.log(error);
-        this.registerFailed(error);
+        this.registrationFailed(error);
       });
   }
 
@@ -82,7 +90,7 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  registerFailed(error: any) {
+  registrationFailed(error: any) {
     this.loadingService.dismiss();
 
     this.alertService.present({
@@ -98,15 +106,11 @@ export class RegisterPage implements OnInit {
     this.router.navigateByUrl("/login");
   }
 
-  routeToForgotPasswordPage() {
-    this.resetRegistrationForm();
-    this.router.navigateByUrl("/forgot-password");
-  }
-
   resetRegistrationForm() {
-    this.registrationForm.get("email").setValue("");
-    this.registrationForm.get("password").setValue("");
+    this.registrationForm.controls['email'].reset();
+    this.registrationForm.controls['password'].reset()
     this.registrationForm.reset(this.registrationForm.value);
     this.registrationForm.markAsPristine();
   }
+
 }

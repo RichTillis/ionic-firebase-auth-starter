@@ -49,6 +49,7 @@ export class UserProfilePage implements OnInit, OnDestroy {
   }
 
   updateUserProfile() {
+    //Deep copy the form object
     const userFormData: User = Object.assign({}, this.userProfileForm.value);
     userFormData.uid = this.userProfile.uid;
 
