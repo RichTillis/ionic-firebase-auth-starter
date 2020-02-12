@@ -7,8 +7,6 @@ import { LoadingService } from "../../../services/loading/loading.service";
 import { ToastService } from "../../../services/toast/toast.service";
 import { AlertService } from "../../../services/alert/alert.service";
 
-import { confirmPasswordValidator } from '../../../validators/confirm-password-validator';
-
 @Component({
   selector: "app-register",
   templateUrl: "./register.page.html",
@@ -52,7 +50,7 @@ export class RegisterPage implements OnInit {
       email: ["", Validators.compose([Validators.required, Validators.email])],
       password: ["", Validators.compose([Validators.required, Validators.minLength(8)])],
       //not yet finished
-      confirmPassword: ["", Validators.compose([Validators.required, confirmPasswordValidator])]
+      confirmPassword: ["", Validators.compose([Validators.required])]
     });
   }
 
