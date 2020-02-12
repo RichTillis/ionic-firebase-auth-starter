@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'register', loadChildren: () => import('./pages/auth/register/register.module').then(m => m.RegisterPageModule) },
   { path: 'forgot-password', loadChildren: () => import('./pages/auth/forgot-password/forgot-password.module').then(m => m.ForgotPasswordPageModule) },
   { path: 'user-profile', loadChildren: './pages/user-profile/user-profile.module#UserProfilePageModule' },
+  { path: 'user-profile-modal', loadChildren: './pages/user-profile-modal/user-profile-modal.module#UserProfileModalPageModule' },
 ];
 
 @NgModule({

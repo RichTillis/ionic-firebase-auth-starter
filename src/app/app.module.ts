@@ -15,10 +15,12 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { environment } from '../environments/environment';
 
+import { UserProfileModalPageModule } from './pages/user-profile-modal/user-profile-modal.module';
+import { UserProfilePopoverComponent } from './components/user-profile-popover/user-profile-popover.component';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, UserProfilePopoverComponent],
+  entryComponents: [UserProfilePopoverComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -27,7 +29,8 @@ import { environment } from '../environments/environment';
     AngularFireAuthModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    UserProfileModalPageModule
   ],
   providers: [
     StatusBar,

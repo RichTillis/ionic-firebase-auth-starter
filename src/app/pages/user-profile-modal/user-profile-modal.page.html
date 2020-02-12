@@ -1,0 +1,35 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>User Profile Modal Content</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="userProfileForm" novalidate>
+    <ion-item>
+      <ion-input formControlName="email" placeholder="Email" type="text" ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input formControlName="firstName" placeholder="First Name" type="text"></ion-input>
+    </ion-item>
+    <div>
+      <ng-container *ngFor="let validation of validation_messages.firstName">
+        <div class="error-message"
+          *ngIf="userProfileForm.get('firstName').hasError(validation.type) && (userProfileForm.get('firstName').dirty || userProfileForm.get('firstName').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-input formControlName="lastName" placeholder="Last Name" type="text"></ion-input>
+    </ion-item>
+  </form>
+
+  <ion-button expand="block" (click)="updateUserProfile()" [disabled]="userProfileForm.invalid || !userProfileForm.dirty">Update User</ion-button>
+
+</ion-content>
